@@ -1,0 +1,12 @@
+{
+  "operation": "delegate",
+  "requestId": "age7-pm-numerical-contract-v1",
+  "parentIssueId": "66531c23-4c1f-4c00-8edb-d28bc611539b",
+  "assigneeAgentId": "a277e4eb-8a40-41a4-a39e-06d266674b51",
+  "title": "Agree AGE-7 ABI numerical defaults with AGE-6 specification",
+  "description": "Addressed to Product Manager for AGE-6/AGE-7 coordination. Use your own isolated task workspace; do not edit AGE-7 or other task checkouts. Repository BohrTheory/Caclulator; base 3ef202581d4e784d0f9da508767577888a4fc272. Parent AGE-7 owns ABI; AGE-6 owns product requirements. Confirm or revise this technical proposal in an immutable spec commit and reply to AGE-7 with SHA and exact semantics. Do not wait for AGE-7 completion (avoid a cycle).\nProposal: stateless full-expression evaluator, conventional precedence and parentheses; ASCII + - * / unary signs; decimal/scientific literals; binary64 round-to-nearest ties-even, finite results only, exact signed-zero divisor is DIVIDE_BY_ZERO, underflow follows binary64 to subnormal/zero, overflow is RANGE. Percent excluded M1. Rust owns canonical display; 15 significant decimal digits, ties-even, strip fractional trailing zeros, decimal point '.', scientific if rounded exponent < -6 or >=15, lowercase e, no plus/leading exponent zero; signed zero displays 0. Independent numeric oracle tolerance abs error <= max(1e-15,1e-12*abs(expected)); exact integer examples remain exact. 0.1+0.2 value approximately 0.3 within tolerance and display exactly '0.3'. Input at most 4096 UTF-8 bytes; depth 64; embedded NUL rejects. UI editing and repeat-equals policy belong to AGE-6; arithmetic/formatting always Rust. ABI angle RAD/DEG reserved for approved scientific extension; both accepted with no M1 effect. Caller-owned buffers; no cross-runtime allocation/free.\nReturn: decisions including grammar, display, tolerance, result continuation (avoid reusing rounded display if precision matters); immutable spec paths/SHA, actual checks, pending independent review. Scope excludes code, workflows, owner acceptance of M2. Ordinary disagreement goes to Tech Lead then Director; no owner precedence question. Completion requires explicit agreement or exact counterproposal and AGE-6 revision, not implementation.",
+  "routing": {
+    "taskKind": "coordination",
+    "reason": "Finalize ordinary numerical defaults between product and ABI owners before dependent implementation."
+  }
+}

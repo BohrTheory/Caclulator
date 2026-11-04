@@ -1,0 +1,22 @@
+{
+  "data": {
+    "status": "delegated",
+    "replayed": false,
+    "issueId": "3e6942f1-2885-4092-bde0-c905ecc77277",
+    "identifier": "AGE-11",
+    "decision": {
+      "status": "allowed",
+      "policyVersion": "1.1.0",
+      "profile": "fast",
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "taskKind": "coordination",
+      "callerRole": "tech-lead",
+      "targetRole": "product-manager",
+      "reason": "Finalize ordinary numerical defaults between product and ABI owners before dependent implementation.",
+      "escalationCount": 0,
+      "qualificationStatus": "passed"
+    },
+    "wakeup": "queued"
+  }
+}

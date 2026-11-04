@@ -1,6 +1,6 @@
 # Calculator architecture contract — AGE-7
 
-Revision: ABI 1.0 / architecture candidate 2, 2026-11-05.
+Revision: ABI 1.0 / architecture candidate 3, 2026-11-05.
 State: numerical peer agreement incorporated; independent current-SHA review pending.
 Dependent implementation requires that review gate.
 
@@ -14,7 +14,8 @@ Base commit: `3ef202581d4e784d0f9da508767577888a4fc272`.
 Author branch: `codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b` in its assigned isolated worktree.
 Initial run: `0d84077a-f6d4-49b0-a433-1c0824778f9c`.
 Reconciliation run: `b432833c-7d6e-4b3d-86c9-30fe99785657`.
-Previous candidate: `5fd95cfad404d85b72c6a9d4663b1d607aec5e6d`.
+Previous candidate: `e5aea8fc091b2b98ce90a3abd21912f72cc090f6` (changes requested).
+Remediation run: `b3daf5ef-fa1b-4de9-b75f-843e0b780217`.
 PM spec/acceptance commit: `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`,
 `docs/product/{calculator-spec-v1,acceptance-cases-v1}.md` (on the PM branch;
 not copied into this architecture worktree).
@@ -23,6 +24,7 @@ not copied into this architecture worktree).
 - [Normative ABI semantics, errors and examples](c-abi-v1.md)
 - [Dependency map and executable handoff packets](integration-packets.md)
 - [Compatibility and migration](compatibility.md)
+- [F1/F2 remediation and archive reproduction](evidence/review-remediation.md)
 - [Actual verification and remaining checks](evidence/verification.md)
 - [Canonical machine-readable declarations](../../contracts/calculator-abi-v1.json)
 - [Generated public header](../../include/calculator_abi_v1.h)

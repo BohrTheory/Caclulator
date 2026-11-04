@@ -60,3 +60,12 @@ commit `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`. Numerical agreement is now
 incorporated; independent current-SHA contract review still remains pending. See
 [reconciliation evidence](pm-reconciliation.md); the original execution report above
 is preserved and is not relabelled as a new run.
+
+
+Candidate-2 review supersession: independent AGE-19/AGE-20 assessments requested
+changes at `e5aea8fc091b2b98ce90a3abd21912f72cc090f6`. The original checker did
+not support read-only Git archives and did not assert the observed nm symbol.
+The historical results above remain evidence for their original scope, not proof
+of archive reproducibility or an effective symbol assertion. Candidate-3 fixes,
+new execution evidence and negative regressions are in
+[review-remediation.md](review-remediation.md). New-SHA independent review is pending.

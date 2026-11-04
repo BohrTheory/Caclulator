@@ -1,0 +1,308 @@
+{
+  "task": "AGE-7",
+  "recorded_at": "2026-11-04T23:53:11.198653+00:00",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "scope": "declarations/generation and consumer reference only; no producer linked or executed",
+  "source_identity": {
+    "kind": "git_checkout",
+    "head": "e5aea8fc091b2b98ce90a3abd21912f72cc090f6",
+    "branch": "codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+    "status": "M tools/check_abi.py\n?? tools/test_check_abi.py"
+  },
+  "passed": true,
+  "results": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "e5aea8fc091b2b98ce90a3abd21912f72cc090f6\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": " M tools/check_abi.py\n?? tools/test_check_abi.py\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "clang",
+        "--version"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "clang++",
+        "--version"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "rustc",
+        "--version"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "rustc 1.89.0 (29483883e 2025-08-04)\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "--version"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "Python 3.9.6\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "tools/generate_abi.py",
+        "--check"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "ABI generated artifacts match\n",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "clang",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-Iinclude",
+        "-c",
+        "examples/abi/header_c.c",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/c.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "clang++",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-Iinclude",
+        "-c",
+        "examples/abi/header_cpp.cpp",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/cpp.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "rustc",
+        "--edition=2024",
+        "--crate-type=lib",
+        "contracts/generated/abi_generated.rs",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/types.rlib"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "nm",
+        "-u",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/cpp.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "___stack_chk_fail\n___stack_chk_guard\n_calc_evaluate_v1\n_memset\n",
+      "stderr": "",
+      "passed": true,
+      "validation_passed": true
+    },
+    {
+      "command": [
+        "clang++",
+        "-std=c++17",
+        "-c",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/missing.cpp",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/missing.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "nm",
+        "-u",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/missing.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true,
+      "validation_passed": true
+    },
+    {
+      "command": [
+        "clang++",
+        "-std=c++17",
+        "-c",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/mangled.cpp",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/mangled.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "nm",
+        "-u",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/mangled.o"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "__Z16calc_evaluate_v1i\n",
+      "stderr": "",
+      "passed": true,
+      "validation_passed": true
+    },
+    {
+      "command": [
+        "/Library/Developer/CommandLineTools/usr/bin/python3",
+        "tools/generate_abi.py",
+        "--check"
+      ],
+      "cwd": "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/drift",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Stale ABI artifacts: include/calculator_abi_v1.h\n",
+      "passed": true,
+      "required_diagnostic": "Stale ABI artifacts: include/calculator_abi_v1.h",
+      "diagnostic_matched": true
+    },
+    {
+      "command": [
+        "rustc",
+        "--edition=2024",
+        "--crate-type=lib",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/matching.rs",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/matching.rlib"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "passed": true
+    },
+    {
+      "command": [
+        "rustc",
+        "--edition=2024",
+        "--crate-type=lib",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/mismatch.rs",
+        "-o",
+        "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-b3daf5ef-fa1-NRlP8i/age7-abi-6obxrpdh/mismatch.rlib"
+      ],
+      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "error[E0308]: mismatched types\n --> /Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b/contracts/generated/producer_checks.rs:4:51\n  |\n4 | const _: crate::abi_generated::CalcEvaluateV1Fn = crate::ffi::calc_evaluate_v1;\n  |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item\n  |\n  = note: expected fn pointer `unsafe extern \"C\" fn(_, _, _, *mut f64, _, _, _, _) -> _`\n                found fn item `unsafe extern \"C\" fn(_, _, _, *mut f32, _, _, _, _) -> _ {ffi::calc_evaluate_v1}`\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0308`.\n",
+      "passed": true,
+      "required_diagnostic": "error[E0308]: mismatched types",
+      "diagnostic_matched": true
+    }
+  ],
+  "input_sha256": {
+    "contracts/calculator-abi-v1.json": "ccbec1a3a05efd4aefb4cef1bcbe79756c4c2d7b3d13538076a73d5da67bd215",
+    "contracts/generated/abi_generated.rs": "71a17f1ced618eef12d31b2b2339663c5402bc6dbd5ecb5e6e914019f1b5732c",
+    "contracts/generated/producer_checks.rs": "81cc8b51e89328e19c30d7f4669736b2ce9bd64ddcd9ef70314c12bbaf04431d",
+    "include/calculator_abi_v1.h": "4153ef424f94c5f5461e07f2d3e20048375fc75ce622687ba8b9adac86c8b8da",
+    "examples/abi/header_c.c": "b87bb3848ce1c6f50f790a698a3b8ca2bbaf27ca4d6fef740c67150a0ee7a89a",
+    "examples/abi/header_cpp.cpp": "3aa47e622607b381444b3a71d9fb26db3f61cefe76bcf25d1b6a328412411141",
+    "tools/check_abi.py": "4f995a070046861b63acfb4412c2bfaad89c6ede63cecfbfec3c2bbb19ee8a2d",
+    "tools/generate_abi.py": "ee1ca9657334a2ae1cbf27981df534d74f93ad8a0a646588a5dacccf6c9d0aba",
+    "tools/test_check_abi.py": "2eb9c43dcf6e08ef3f86f9b71c128f399f24d88ba752952e60ef57206092fd46"
+  }
+}

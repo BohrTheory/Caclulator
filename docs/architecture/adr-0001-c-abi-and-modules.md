@@ -1,7 +1,8 @@
 # ADR-0001: stateless Rust evaluator behind a generated C ABI
 
-Status: proposed for independent review. Technical default selected by Tech Lead;
-numerical defaults require PM agreement in AGE-11. Date: 2026-11-05.
+Status: proposed for independent review. Numerical behavior aligned with PM
+spec commit `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`. Date: 2026-11-05.
+Candidate 2 supersedes candidate 1 numerical-proposal wording; no ABI declarations change.
 
 ## Context and decision
 
@@ -58,9 +59,11 @@ The diagram denotes dependencies, not implementation already present.
 No dependency from Rust to Qt, UI, xmake, or platform GUI libraries is allowed.
 The C++ adapter converts byte spans and status/result records; it never reimplements
 precedence, arithmetic, rounding, or domains. UI error wording is localizable;
-numeric result bytes come from Rust. The editor can serialize a retained finite
-double losslessly for ABI transport if PM chooses exact-result continuation; this
-is representation conversion, not a second numeric evaluator.
+numeric result bytes come from Rust. The adapter must serialize retained finite
+doubles losslessly for exact-result continuation/repeat, as required by PM. This
+is representation conversion; all arithmetic and compound-operand evaluation stay
+in Rust. See c-abi-v1.md for transport and bit-identity checks. The UI selects the
+repeat descriptor under PM editing policy; the ABI does not expose a parser tree.
 
 ## Source extension registry
 

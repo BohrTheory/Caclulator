@@ -1,6 +1,7 @@
 # C ABI v1.0 behavioral contract
 
-State: complete review candidate. Numerical subsection is proposed pending AGE-11.
+State: numerical behavior aligned with AGE-6 spec commit
+`c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`; independent review pending.
 Canonical declarations: `contracts/calculator-abi-v1.json`; generated header
 `include/calculator_abi_v1.h`. The ABI exposes only `calc_abi_version` and
 `calc_evaluate_v1`. No Qt, Rust strings/vectors, C++ classes, enums with uncertain
@@ -101,7 +102,7 @@ never display `out_value` as a valid result except for OK or BUFFER_TOO_SMALL.
 Offsets are zero-based UTF-8 byte offsets into the exact submitted expression, not
 UTF-16 positions or visual columns. UI maps them to its string representation.
 
-## Numerical and language proposal for PM agreement
+## Numerical and language contract
 
 M1 grammar, ASCII tokens and ASCII whitespace SP/TAB/CR/LF only:
 
@@ -140,14 +141,48 @@ Decimal point is always `.`; no locale or digit grouping. Examples: `0.1+0.2` di
 `0.3`, `1/3` displays `0.333333333333333`, `1e15` displays `1e15`, `1e-7` displays
 `1e-7`, zero displays `0`. Output ASCII is valid UTF-8. Maximum complete display
 storage is CALC_DISPLAY_CAPACITY=64 bytes including NUL. Exceeding that internal
-bound is INTERNAL, not a truncated result. Final PM rounding and continuation
-decisions must replace this proposal before component implementation.
+bound is INTERNAL, not a truncated result. Display bytes are presentation only;
+continuation follows the lossless transport rules below.
 
-Numeric tests use independent expected values; proposed tolerance is
+Numeric tests use independent expected values; agreed tolerance is
 `abs(actual-expected) <= max(1e-15, 1e-12*abs(expected))` for approximate examples.
 Exactly representable elementary integer cases must be exact. Display strings have
 exact expectations separately. Do not use approximate tolerance to bless overflow,
 domain failures, signed-zero divisor handling, or the wrong operation order.
+
+## Retained values and stateless continuation
+
+The UI retains the successful binary64 `out_value` independently of the 15-digit
+display. To continue with an operator, serialize that retained value as an ASCII
+decimal/scientific literal that round-trips to the identical binary64 bits. C++17
+`std::to_chars` with `std::chars_format::general` and
+`std::numeric_limits<double>::max_digits10` precision is the adapter strategy;
+check its error result. Preserve the sign of zero (explicitly emit `-0` when needed).
+Transport text is not displayed and must never be derived from display bytes.
+The producer's decimal conversion must correctly round these literals, including
+subnormals, to the original binary64 value under the required rounding environment.
+Wrap transported literals in parentheses when composing a full expression, including
+negative values; the normal input byte/depth limits still apply to the full payload.
+
+For repeated equals, the UI owns a repeat descriptor (binary operator and retained
+right-hand operand). Any evaluation of a compound right-hand operand must use the
+Rust evaluator, never C++ arithmetic. Once selected by the product editing policy,
+retain its binary64 result and serialize both operands by the same lossless rule.
+For the specified `2+3=` example, retain `+` and binary64 `3`: repeat submits
+`(5)+(3)` and then `(8)+(3)`. No repeat descriptor means no further evaluation.
+The ABI does not infer a repeat descriptor, retain state, or expose parse-tree
+metadata. AGE-6 must clarify which descriptor is selected for compound expressions
+such as `2+3*4` and `(2+3)*4`; this is a UI policy gap, not permission to duplicate
+Rust precedence or to change the C declarations without contract review.
+
+Mandatory integration oracles: after `1/3=`, continuing `*3=` yields numeric exactly
+`1` and display `1`; using displayed `0.333333333333333` as input fails the numeric
+oracle. After `0.1+0.2=`, continuing `-0.3=` yields the positive binary64 value
+`2^-54`, not zero. Test transport identity by exact bits for negative zero, minimum
+positive subnormal, minimum positive normal, maximum finite, and representative
+negative/exponent values. Approximate tolerance cannot prove lossless transport.
+Backspace-after-result intentionally enters the displayed number into an editable
+entry per AGE-6; that explicit edit is distinct from automatic continuation/repeat.
 
 ## Call examples and mandatory cases
 

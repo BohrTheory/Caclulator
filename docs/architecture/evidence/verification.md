@@ -54,6 +54,9 @@ Not executed:
 - GitHub push/PR/merge/release: not attempted; intended integration and branch/review
   controls remain required. No personal credential fallback.
 
-Numerical model/display/continuation agreement is pending PM AGE-11/AGE-6. Until
-that and independent contract review resolve, the candidate is reviewable but must
-not be described as the finalized implementation prerequisite.
+Historical candidate-1 disposition: numerical agreement was pending at the time of
+this run. Superseded by PM comment `ede93b3d-eb06-443d-a465-842f070b7932` and spec
+commit `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`. Numerical agreement is now
+incorporated; independent current-SHA contract review still remains pending. See
+[reconciliation evidence](pm-reconciliation.md); the original execution report above
+is preserved and is not relabelled as a new run.

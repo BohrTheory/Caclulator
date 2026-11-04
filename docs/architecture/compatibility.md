@@ -4,6 +4,16 @@ ABI 1.0 is the first public contract candidate; there is no existing calculator
 implementation/data to migrate from base `3ef202581d4e784d0f9da508767577888a4fc272`.
 This is not permission to overwrite uncommitted work in other task worktrees.
 
+Candidate 2 reconciliation: PM spec `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`
+confirms arithmetic/formatting and requires retained binary64 continuation/repeat.
+Compared with candidate 1 `5fd95cfad404d85b72c6a9d4663b1d607aec5e6d`, the JSON,
+generated C/Rust declarations, symbols and ABI version remain byte-identical.
+No regeneration or consumer signature migration is needed. Consumers must implement
+the now-required lossless transport; new source integration combines this contract
+commit with the PM spec commit in its own task worktree and reruns integration
+checks. Neither candidate has an independent approval in this record. Existing
+verification is retained, and this amended head needs a fresh independent verdict.
+
 The symbol `calc_evaluate_v1`, its argument order/types, constants, buffer/lifetime
 rules and established error meanings remain fixed across v1 minor revisions.
 Unknown status values are generic errors. Additive new symbols and new status values

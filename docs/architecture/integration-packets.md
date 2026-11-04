@@ -11,7 +11,7 @@ copy exported from the exact reviewed commit, with build output outside that cop
 
 | Input | Owner / authority | Blocks only |
 |---|---|---|
-| Accepted M1 behavior, numeric model/display/tolerance revision | PM AGE-6; numerical coordination AGE-11 (`3e6942f1-2885-4092-bde0-c905ecc77277`) | Final semantic contract and component implementation |
+| M1 behavior, numeric model/display/tolerance revision | PM AGE-6 commit `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`; AGE-11 numerical agreement received | Numerical dependency resolved; spec independent review remains required; compound repeat selection needs PM clarification for UI |
 | Canonical ABI + ADR, independent current-SHA verdict | Tech Lead AGE-7; neutral review routing | Component implementation against fixed interface |
 | Rust compiler/Cargo | DevOps AGE-4 capability evidence | Core compile/unit and linked integration |
 | C++ compiler, xmake, Qt Widgets | DevOps AGE-4 capability evidence | UI build/unit and desktop packaging; no Qt needed for core or C ABI integration |
@@ -20,7 +20,9 @@ copy exported from the exact reviewed commit, with build output outside that cop
 | Verified bot gateway and branch controls | DevOps/Lead | Push/PR/merge only |
 | Owner accepts M1 | Lead AGE-3 | M2 implementation, not M2 planning |
 
-AGE-11 must not depend on completion of AGE-7: it supplies its numerical decision.
+AGE-11 supplied its numerical decision; it must not depend on completion of AGE-7.
+Track the remaining compound-repeat UI clarification with PM without reopening
+the agreed arithmetic/formatting contract or blocking independent core work.
 Review tasks must not wait for AGE-7 to close; they review its candidate SHA.
 Use real issue IDs for real prerequisites only. Do not add a global environment,
 staffing, GUI or parent-completion blocker to independent source work.
@@ -32,7 +34,8 @@ Project `50271359-4516-466c-8325-0d234bd5ddb0`, parent delivery AGE-3
 `66531c23-4c1f-4c00-8edb-d28bc611539b`, repository
 `https://github.com/BohrTheory/Caclulator`. Initial base
 `3ef202581d4e784d0f9da508767577888a4fc272`; execution tasks must replace this with
-the accepted contract + spec commit references in their packet and record their own
+the accepted contract commit plus spec `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`
+in their packet and record their own
 actual base/current SHA, branch, absolute task worktree and run/agent IDs.
 
 Each recipient reads the calculator profile and task-handoff policy. No paid API
@@ -69,6 +72,8 @@ Acceptance/unit evidence: exact integer results 5/-3/42/4; precedence 14/20;
 left associativity, unary signs, decimal editing literals, exponent boundaries,
 numeric tolerance and exact display strings from spec; malformed/empty UTF-8,
 NUL, incomplete expression, divide by signed zero, finite overflow/underflow,
+correctly rounded parsing of lossless transported binary64 literals including
+minimum subnormal and maximum finite values (exact bit identity),
 4096/4097-byte and depth64/65 boundaries; all documented null cases, size-query,
 exact/short capacity, no output writes on INVALID_ARGUMENT, output reset on errors,
 panic injection containment and recovery. No undefined-address tests as success cases.
@@ -98,10 +103,20 @@ maps every status to stable localizable error presentation, handles unknown stat
 as failure, and never shows the numeric failure sentinel as a result. Exceptions
 from C++ allocations stay on C++ side. Editor owns state but no arithmetic; it uses
 the agreed continuation policy and clears stale results after input changes.
+Retain successful binary64 results and repeat operands separately from display.
+Use the lossless ASCII transport in c-abi-v1.md; Rust evaluates any compound repeat
+operand. Never reparse the 15-digit display for automatic continuation/repeat.
+PM must settle descriptor selection for compound expressions before that UI behavior
+is accepted; do not infer it by introducing a second evaluator. Preserve the failed
+expression for backspace correction; Clear/fresh digit recovery follows AGE-6.
 
 Acceptance: developer unit checks for PM state transitions, all keyboard bindings,
 focus, error recovery, UTF-8 conversion lifetime, error offset mapping, buffer retry,
-ABI mismatch and unknown status. Build with xmake using actual Rust archive for the
+ABI mismatch and unknown status. Assert exact retained-value transport, `1/3=`
+then `*3=` numeric exactly 1, and `0.1+0.2=` then `-0.3=` numeric `2^-54`;
+repeat the retained RHS without accumulating display-rounding loss. Test signed
+zero/subnormal/max-finite transport by bits. These are planned tests, not executed.
+Build with xmake using actual Rust archive for the
 app. Deliver exact build/test commands, outputs, target/Qt version, artifact hash and
 SHA. Experience Reviewer plus Quality Reviewer assess interface usage independently.
 
@@ -118,6 +133,9 @@ normal numeric/display cases plus every status/ownership table row: size query,
 exact capacity, one-byte-short capacity, canaries around writable buffers,
 untouched outputs on INVALID_ARGUMENT, empty outputs on other errors, embedded NUL,
 malformed UTF-8, input/depth bounds, signed-zero divisor, overflow and recovery.
+Include the exact-bit transport and retained-value continuation cases from
+c-abi-v1.md through the real adapter/producer; tolerant numeric checks alone do
+not satisfy that acceptance.
 Run repeated calls and concurrent disjoint-output calls; verify no hidden angle or
 error state and no cross-allocator free requirement. Use sanitizers where supported
 and identify which language/runtime was instrumented. Test-only panic injection in

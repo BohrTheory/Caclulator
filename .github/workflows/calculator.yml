@@ -53,6 +53,19 @@ jobs:
         run: rustup toolchain install 1.89.0 --profile minimal
       - name: Independent producer build and unit tests
         run: python3 scripts/ci/build.py --producer inputs/producer --producer-only --output "$RUNNER_TEMP/producer-results"
+      - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1
+        with:
+          xmake-version: '2.9.9'
+      - uses: jurplel/install-qt-action/action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005 # v4.3.0
+        with:
+          version: '6.8.3'
+          aqtversion: '==3.3.0'
+          py7zrversion: '==1.1.0'
+          cache: false
+      - name: Verify pinned Python and Qt after setup
+        run: |
+          python3 -c 'import sys; print(sys.version); assert sys.version_info[:3] == (3, 12, 10)'
+          test "$("$QT_ROOT_DIR/bin/qmake" -query QT_VERSION)" = 6.8.3
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: 35611d018ca82f86ed9a3271128999012789b39a
@@ -63,15 +76,6 @@ jobs:
           ref: 6fff4dc5229ea88a2f55a274ab2ab561a3760065
           path: inputs/qa
           persist-credentials: false
-      - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1
-        with:
-          xmake-version: '2.9.9'
-      - uses: jurplel/install-qt-action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005 # v4.3.0
-        with:
-          version: '6.8.3'
-          aqtversion: '==3.3.0'
-          py7zrversion: '==1.1.0'
-          cache: false
       - name: Clean native build, unit and integration execution, package
         run: |
           set -euo pipefail

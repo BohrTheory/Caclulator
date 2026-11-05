@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530/build/macosx/arm64/debug/client_units",
+    "sha256": "657cc35e0e8d6375fd2f75745886a89a0189cbb0197ffc67eec71d3246848401",
+    "bytes": 362304,
+    "kind": "author unit binary or C++ consumer archive; no Rust/Qt app"
+  },
+  {
+    "path": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530/build/macosx/arm64/debug/libcalculator_client.a",
+    "sha256": "848e0a403777e51674a08208b201553702ab47902b76355d0f372f9e1e33f380",
+    "bytes": 485184,
+    "kind": "author unit binary or C++ consumer archive; no Rust/Qt app"
+  }
+]

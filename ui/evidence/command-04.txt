@@ -1,0 +1,3 @@
+ABI generated artifacts match
+
+STDERR:

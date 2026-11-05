@@ -1,0 +1,44 @@
+[
+  {
+    "argv": [
+      "xmake",
+      "f",
+      "-m",
+      "debug",
+      "--app=n",
+      "--qt_units=y",
+      "-y"
+    ],
+    "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530",
+    "exit_code": 255,
+    "stdout": "\u001b[0mchecking for platform ... \u001b[38;5;2;1mmacosx\u001b[0m\n\u001b[0mchecking for architecture ... \u001b[38;5;2;1marm64\u001b[0m\n\u001b[0mchecking for Xcode directory ... \u001b[38;5;2;1m%s\u001b[0m\n\u001b[0mchecking for Codesign Identity of Xcode ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for rust_archive ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for rust_native_links ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for Qt SDK directory ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0m\u001b[1;38;5;1;1merror: \u001b[0mQt SDK not found!\u001b[0m\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "xmake",
+      "build",
+      "-v",
+      "widget_units"
+    ],
+    "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530",
+    "exit_code": 0,
+    "stdout": "\u001b[0mchecking for Xcode directory ... \u001b[38;5;2;1m%s\u001b[0m\n\u001b[0mchecking for Codesign Identity of Xcode ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for nim ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for nim ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for rust_native_links ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0mchecking for rust_archive ... \u001b[38;5;1;1mno\u001b[0m\n\u001b[0m\u001b[38;5;2;1m[100%]:\u001b[0m \u001b[2m\u001b[38;5;2;1mbuild ok, spent 0.003s\u001b[0m\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "xmake",
+      "f",
+      "-m",
+      "debug",
+      "--app=n",
+      "--qt_units=n",
+      "-y"
+    ],
+    "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

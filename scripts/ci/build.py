@@ -19,6 +19,7 @@ p = argparse.ArgumentParser()
 for name in PINS:
     p.add_argument("--" + name, type=Path, required=name == "producer")
 p.add_argument("--producer-only", action="store_true")
+p.add_argument("--projection-lock", type=Path)
 p.add_argument("--output", type=Path, required=True)
 p.add_argument("--qt", type=Path)
 p.add_argument("--native-only", action="store_true")
@@ -74,15 +75,36 @@ if os.getenv("GITHUB_ACTIONS") == "true":
         raise SystemExit("Expected actual macOS 15 runner")
     if not mac and 'VERSION_ID="24.04"' not in Path("/etc/os-release").read_text():
         raise SystemExit("Expected actual Ubuntu 24.04 runner")
-for name, source in sources.items():
-    if (source / ".git").exists():
-        if run(["git", "rev-parse", "HEAD"], source).strip() != PINS[name]:
-            raise SystemExit("Checkout SHA mismatch: " + name)
-    elif os.getenv("GITHUB_ACTIONS") == "true":
-        raise SystemExit("Missing Git checkout identity: " + name)
-save("identity.json", dict(pins=PINS, platform=platform.platform(),
+projection = None
+if a.projection_lock:
+    from importlib.util import find_spec
+    verifier = find_spec("projection")
+    if verifier is None or verifier.origin is None:
+        raise SystemExit("Missing reviewed projection verifier")
+    policy_hashes = {}
+    for path, expected in [
+        (Path(verifier.origin), "4dba60815744371c3dccbbbb846b397eda2b671a62b8f25b4e2f5c293bbe0bd7"),
+        (a.projection_lock, "06e304d7aaf9e6fef002f60b2145886de3aae0300c77e8d8f72d2b0dad0971b8"),
+    ]:
+        policy_hashes[path.name] = digest(path)
+        if policy_hashes[path.name] != expected:
+            raise SystemExit("Reviewed support SHA256 mismatch: " + path.name)
+    save("verification-policy.json", policy_hashes)
+    from projection import verify
+    projection = verify(a.projection_lock, sources, PINS,
+        lambda root: run(["git", "rev-parse", "HEAD"], root).strip(),
+        github_actions=os.getenv("GITHUB_ACTIONS") == "true")
+else:
+    for name, source in sources.items():
+        if (source / ".git").exists():
+            if run(["git", "rev-parse", "HEAD"], source).strip() != PINS[name]:
+                raise SystemExit("Checkout SHA mismatch: " + name)
+        elif os.getenv("GITHUB_ACTIONS") == "true":
+            raise SystemExit("Missing Git checkout identity: " + name)
+save("identity.json", dict(pins=PINS, sourceProjection=projection, platform=platform.platform(),
      architecture=platform.machine(), candidate=os.getenv("CANDIDATE_SHA"),
      workflow_sha=os.getenv("WORKFLOW_SHA"), run=os.getenv("GITHUB_RUN_ID"),
+     verificationFoundation=os.getenv("PROJECTION_FOUNDATION_SHA"), verificationContract=os.getenv("PROJECTION_CONTRACT_SHA"),
      attempt=os.getenv("GITHUB_RUN_ATTEMPT"), image=os.getenv("ImageVersion"),
      instrumented="C/C++ harness only; Rust archive/std uninstrumented",
      compatibility="Deployment target 14.0 is not macOS 14 execution"))
@@ -123,17 +145,19 @@ if a.producer_only:
         tar.add(archive, arcname="libcalculator_core.a")
         tar.add(producer / "include/calculator_abi_v1.h", arcname="calculator_abi_v1.h")
     (out / "SHA256SUMS").write_text(digest(filename) + "  " + filename.name + "\n")
-    save("result.json", dict(status="producer-units-passed", source=PINS["producer"], sha256=digest(filename)))
+    save("result.json", dict(status="producer-units-passed", source=PINS["producer"],
+         sourceProjection=projection, sha256=digest(filename)))
     raise SystemExit(0)
 qa = sources["qa"] / "tests/integration/age29"
-for name, filename in [("producer", "fixture-manifest.json"),
-                       ("experience", "experience-manifest.json")]:
-    manifest = json.loads((qa / filename).read_text())
-    if manifest["sourceCommit"] != PINS[name]:
-        raise SystemExit("Wrong source pin: " + name)
-    for file, expected in manifest["sourceFiles"].items():
-        if digest(sources[name] / file) != expected:
-            raise SystemExit("Source hash mismatch: " + name + "/" + file)
+if projection is None:
+    for name, filename in [("producer", "fixture-manifest.json"),
+                           ("experience", "experience-manifest.json")]:
+        manifest = json.loads((qa / filename).read_text())
+        if manifest["sourceCommit"] != PINS[name]:
+            raise SystemExit("Wrong source pin: " + name)
+        for file, expected in manifest["sourceFiles"].items():
+            if digest(sources[name] / file) != expected:
+                raise SystemExit("Source hash mismatch: " + name + "/" + file)
 ui = sources["experience"]
 for mode, flags in [("normal", []),
                     ("asan-ubsan", ["-fsanitize=address,undefined"]),
@@ -221,5 +245,5 @@ with tarfile.open(filename, "w:gz") as tar:
     tar.add(package, arcname="Calculator")
 (out / "SHA256SUMS").write_text(digest(filename) + "  " + filename.name + "\n")
 save("result.json", dict(status="build-and-tests-passed", package=filename.name,
-     sha256=digest(filename), pins=PINS, externalGUI="unexecuted",
+     sha256=digest(filename), pins=PINS, sourceProjection=projection, externalGUI="unexecuted",
      macOS14Runtime="unexecuted", ownerReleaseAcceptance="pending"))

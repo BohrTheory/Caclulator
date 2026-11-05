@@ -69,3 +69,11 @@ The historical results above remain evidence for their original scope, not proof
 of archive reproducibility or an effective symbol assertion. Candidate-3 fixes,
 new execution evidence and negative regressions are in
 [review-remediation.md](review-remediation.md). New-SHA independent review is pending.
+
+## Candidate 4 supersession notice
+
+This record and its original JSON remain historical evidence. Active spec selection
+and the former pending compound-repeat question are superseded by
+[repeat-policy-reconciliation.md](repeat-policy-reconciliation.md), pinning spec
+`752d0961c8aacb2e79addeb6d1e26a7ea820d734`. Prior adverse verdicts and F1/F2 closure
+are preserved in their assessed scope; none is an approval of the new pair.

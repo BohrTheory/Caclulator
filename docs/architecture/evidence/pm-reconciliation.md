@@ -96,3 +96,11 @@ AGE-7 is not marked done. The prior attempt to set `in_review` failed with HTTP4
 until authorized native routing establishes a recognized review participant; do
 not invent an owner approval or timer to force a transition. No second scheduler,
 private task queue, or duplicate review task has been created.
+
+## Candidate 4 supersession notice
+
+This record and its original JSON remain historical evidence. Active spec selection
+and the former pending compound-repeat question are superseded by
+[repeat-policy-reconciliation.md](repeat-policy-reconciliation.md), pinning spec
+`752d0961c8aacb2e79addeb6d1e26a7ea820d734`. Prior adverse verdicts and F1/F2 closure
+are preserved in their assessed scope; none is an approval of the new pair.

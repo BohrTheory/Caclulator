@@ -1,8 +1,9 @@
 # ADR-0001: stateless Rust evaluator behind a generated C ABI
 
 Status: proposed for independent review. Numerical behavior aligned with PM
-spec commit `c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`. Date: 2026-11-05.
-Candidate 2 supersedes candidate 1 numerical-proposal wording; no ABI declarations change.
+spec commit `752d0961c8aacb2e79addeb6d1e26a7ea820d734`. Date: 2026-11-05.
+Candidate 4 incorporates the selected lexical repeat policy; separate spec acceptance
+and renewed exact-pair architecture review remain pending. No ABI declarations change.
 
 ## Context and decision
 
@@ -63,7 +64,12 @@ numeric result bytes come from Rust. The adapter must serialize retained finite
 doubles losslessly for exact-result continuation/repeat, as required by PM. This
 is representation conversion; all arithmetic and compound-operand evaluation stay
 in Rust. See c-abi-v1.md for transport and bit-identity checks. The UI selects the
-repeat descriptor under PM editing policy; the ABI does not expose a parser tree.
+repeat descriptor by current-text token roles/depth/spans under D-07: strip only
+balanced whole-expression wrappers, then select the rightmost depth-zero binary
+operator and complete RHS suffix, excluding unary/exponent signs. This lexical
+selection has no precedence engine or arithmetic; Rust validates/evaluates the full
+expression and RHS. The ABI does not expose a parser tree. See c-abi-v1.md for
+transaction, descriptor lifecycle and unchanged stateless-call requirements.
 
 ## Source extension registry
 
@@ -82,7 +88,10 @@ mapping, regression tests and UI affordances, with no new ABI signature for norm
 expression functions. No `dlopen`, external module search, runtime plugin discovery
 or executable user extensions. Unknown identifiers return SYNTAX in M1. Adding
 recognized tokens is a product/spec revision as well as an additive language change.
-M2 implementation remains gated by owner acceptance of M1.
+M2 implementation requires both recorded owner acceptance of the M1 first release
+and a revision-pinned accepted scientific v1 contract compatible with the ABI,
+covering operations, domains, angles, numerical accuracy/tolerance, errors and
+display. Planning may proceed; neither gate is inferred satisfied.
 
 ## Build and platform proposal
 

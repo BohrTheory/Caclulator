@@ -1,7 +1,8 @@
 # C ABI v1.0 behavioral contract
 
-State: numerical behavior aligned with AGE-6 spec commit
-`c5ff879a8df5a673f3b8dae7d5e46fe30ec67549`; independent review pending.
+State: numerical and repeated-equals behavior aligned with AGE-6 spec commit
+`752d0961c8aacb2e79addeb6d1e26a7ea820d734`; separate spec acceptance and renewed
+exact-pair review pending.
 Canonical declarations: `contracts/calculator-abi-v1.json`; generated header
 `include/calculator_abi_v1.h`. The ABI exposes only `calc_abi_version` and
 `calc_evaluate_v1`. No Qt, Rust strings/vectors, C++ classes, enums with uncertain
@@ -164,16 +165,59 @@ subnormals, to the original binary64 value under the required rounding environme
 Wrap transported literals in parentheses when composing a full expression, including
 negative values; the normal input byte/depth limits still apply to the full payload.
 
-For repeated equals, the UI owns a repeat descriptor (binary operator and retained
-right-hand operand). Any evaluation of a compound right-hand operand must use the
-Rust evaluator, never C++ arithmetic. Once selected by the product editing policy,
-retain its binary64 result and serialize both operands by the same lossless rule.
-For the specified `2+3=` example, retain `+` and binary64 `3`: repeat submits
-`(5)+(3)` and then `(8)+(3)`. No repeat descriptor means no further evaluation.
-The ABI does not infer a repeat descriptor, retain state, or expose parse-tree
-metadata. AGE-6 must clarify which descriptor is selected for compound expressions
-such as `2+3*4` and `(2+3)*4`; this is a UI policy gap, not permission to duplicate
-Rust precedence or to change the C declarations without contract review.
+### Repeat selection and transactional controller state
+
+The source is the pinned AGE-6 D-07/§4.2 and U-12/I-12/G-12, incorporating AGE-22.
+The prior open question is resolved. The existing stateless ABI supports this rule;
+no schema, symbol, signature or version change is required.
+
+On Equals for a new/edited expression:
+
+1. Invalidate any old descriptor. Submit the **complete current expression** to
+   Rust for validation/evaluation. Only a successful adapter result (OK, after any
+   successful BUFFER_TOO_SMALL retry) can proceed. Save the full-result binary64
+   **and display bytes before reusing any output storage** for RHS evaluation.
+2. Build a whitespace-free lexical view from current text/token spans. Repeatedly
+   remove only balanced parenthesis pairs enclosing the entire view: an opening
+   parenthesis must match the last token, not close before it. Select the rightmost
+   binary `+ - * /` at depth zero. Token roles distinguish an operand from an
+   operator: `+/-` where an operand is expected are unary, and `+/-` within a
+   numeric exponent token are exponent signs. Neither is a binary candidate.
+   Parentheses update depth; do not descend into operand groups to find a candidate.
+   Keep the **entire suffix** after the selected operator, including its groups
+   and unary signs, as the RHS span. Current text wins over chronological key history.
+   This scan performs no precedence resolution, expression-tree construction or
+   numerical evaluation. Rust remains the syntax and arithmetic authority.
+3. If there is a candidate, submit that complete RHS expression through Rust even
+   if it looks like a single literal. Retain its successful binary64 value together
+   with the operator, separately from the saved full-result binary64 and display.
+   Do not replace the full result/display with the RHS output. Commit controller
+   result and descriptor only when all required calls/conversions succeed. If no
+   candidate exists, commit the full result with no descriptor and make no RHS call.
+4. For later Equals with a descriptor, serialize current result and retained RHS
+   by the lossless rule above and evaluate `(result)op(RHS)` through Rust. Retain
+   the same operator/RHS across successful repeats; update only the result/display.
+   Do not derive a new descriptor by scanning this synthetic repeat expression.
+   With no descriptor, repeated Equals leaves the result/display unchanged and
+   makes **no evaluator call**.
+
+Every full/RHS/repeat call obeys input lifetime, disjoint output regions, actual
+allocation size, UTF-8 byte length, status and output-transaction rules above.
+A sequential call may reuse storage only after the needed values/bytes are copied;
+concurrent calls require independent output storage. Prefer the sufficient 64-byte
+buffer; a size-query/short-buffer response is not a UI commit until a successful
+retry supplies the complete display. Check conversion/retry errors and input limits.
+Never use numeric failure sentinels, stale outputs, or display text as operands.
+
+Clear and **any expression edit** invalidate the descriptor, including backspace,
+sign toggle and new digit/decimal entry. Operator continuation serializes the saved
+result into a new parenthesized expression, invalidates the old descriptor, and
+establishes a new descriptor only on successful Equals for that new expression.
+Full-expression, RHS, transport or repeat failure invalidates the descriptor and
+enters normal error recovery; an intermediate success must not escape as a final
+result. Preserve the failed expression for backspace correction. Clear returns to
+empty-ready; a fresh digit/decimal after error starts a new expression. Backspace
+correction must evaluate the corrected current text, never reuse an old operand.
 
 Mandatory integration oracles: after `1/3=`, continuing `*3=` yields numeric exactly
 `1` and display `1`; using displayed `0.333333333333333` as input fails the numeric

@@ -98,3 +98,11 @@ checks remain unexecuted here. Their owners and exact future acceptance are in
 [integration-packets.md](../integration-packets.md). GitHub publication, PR/head,
 CI and formal review-App checks remain undelivered; no personal-token fallback,
 push, merge or release is claimed. Owner M1 acceptance still gates M2.
+
+## Candidate 4 supersession notice
+
+This record and its original JSON remain historical evidence. Active spec selection
+and the former pending compound-repeat question are superseded by
+[repeat-policy-reconciliation.md](repeat-policy-reconciliation.md), pinning spec
+`752d0961c8aacb2e79addeb6d1e26a7ea820d734`. Prior adverse verdicts and F1/F2 closure
+are preserved in their assessed scope; none is an approval of the new pair.

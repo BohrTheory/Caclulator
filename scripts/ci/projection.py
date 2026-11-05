@@ -1,6 +1,7 @@
 """Validate a reviewed source projection without weakening source or test hashes."""
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 REQUIRED = {
@@ -35,6 +36,29 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def verify_git_tree(root, transport, expected):
+    """Bind the reviewed bytes to Git objects as well as the working files."""
+    def git(*args):
+        return subprocess.check_output(["git", "--no-replace-objects", "-C", str(root), *args])
+
+    require(Path(git("rev-parse", "--show-toplevel").decode().strip()).resolve() == root.resolve(),
+            "Source root must be the checkout root")
+    require(git("rev-parse", "HEAD").decode().strip() == transport, "Actual Git HEAD mismatch")
+    committed = {}
+    for record in git("ls-tree", "-rz", "--full-tree", transport).split(b"\0"):
+        if not record:
+            continue
+        metadata, path = record.split(b"\t", 1)
+        mode, kind, oid = metadata.decode().split()
+        path = path.decode()
+        require(mode in {"100644", "100755"} and kind == "blob", "Non-regular committed path: " + path)
+        require(path in expected, "Unreviewed committed file: " + path)
+        committed[path] = digest(git("cat-file", "blob", oid))
+        require(committed[path] == expected[path], "Committed source hash mismatch: " + path)
+    require(set(committed) == set(expected), "Committed source file set differs from reviewed projection")
+    require(not git("status", "--porcelain=v1", "--untracked-files=all"), "Source checkout is dirty")
+
+
 def verify(lock_path, sources, original_pins, read_head, allow_unpublished=False, github_actions=False):
     raw = Path(lock_path).read_bytes()
     lock = json.loads(raw)
@@ -50,7 +74,8 @@ def verify(lock_path, sources, original_pins, read_head, allow_unpublished=False
         require(digest(data) == lock["historicalManifestHashes"][name], "Historical manifest changed: " + name)
         manifests[name] = json.loads(data)
         require(manifests[name]["sourceCommit"] == original_pins[name], "Manifest source pin changed")
-    proof = {"contractSHA256": digest(raw), "inputs": {}, "hostedEvidenceEligible": not allow_unpublished}
+    proof = {"verificationVersion": 2, "contractSHA256": digest(raw), "inputs": {},
+        "hostedEvidenceEligible": not allow_unpublished}
     for name, paths in REQUIRED.items():
         entry = lock["inputs"][name]
         require(entry["included"] == sorted(paths), "Required build/test input list changed: " + name)
@@ -88,6 +113,11 @@ def verify(lock_path, sources, original_pins, read_head, allow_unpublished=False
             require(isinstance(transport, str) and len(transport) == 40 and all(c in "0123456789abcdef" for c in transport), "Reviewed transport SHA is required: " + name)
             require((root / ".git").exists(), "Hosted input must be a Git checkout")
             require(read_head(root) == transport, "Transport SHA mismatch: " + name)
+            committed_expected = dict(expected)
+            if ".gitignore" in allowed:
+                committed_expected[".gitignore"] = lock["baselineGitignoreSHA256"]
+            verify_git_tree(root, transport, committed_expected)
         proof["inputs"][name] = {"originalSourceSha": original_pins[name], "transportSha": transport,
-            "payloadSHA256": payload, "verifiedFileCount": len(actual), "omittedHistoricalFileCount": len(entry["omitted"])}
+            "payloadSHA256": payload, "verifiedFileCount": len(actual),
+            "omittedManifestFileCount": len(entry["omitted"]) if name in manifests else None}
     return proof

@@ -1,7 +1,7 @@
 """Verifier contract tests use synthetic bytes, never claim application coverage."""
 import copy
-import hashlib
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -43,12 +43,33 @@ class ProjectionTests(unittest.TestCase):
     def check(self, lock=None, unpublished=True, hosted=False, head=None):
         path = self.root / "lock.json"
         path.write_text(json.dumps(self.lock if lock is None else lock))
-        return verify(path, self.sources, self.pins, lambda _: head, unpublished, hosted)
+        reader = lambda root: head if head is not None else self.git(root, "rev-parse", "HEAD").strip()
+        return verify(path, self.sources, self.pins, reader, unpublished, hosted)
+
+    def git(self, root, *args):
+        return subprocess.check_output(["git", "-C", str(root), "-c", "core.hooksPath=/dev/null",
+            "-c", "commit.gpgsign=false", *args], text=True)
+
+    def commit(self, name):
+        root = self.sources[name]
+        self.git(root, "add", "--all")
+        self.git(root, "commit", "--quiet", "-m", "Verifier fixture")
+        self.lock["inputs"][name]["transportSha"] = self.git(root, "rev-parse", "HEAD").strip()
+
+    def publish_fixtures(self):
+        for name, root in self.sources.items():
+            self.git(root, "init", "--quiet")
+            self.git(root, "config", "user.name", "Projection test")
+            self.git(root, "config", "user.email", "projection-test@example.invalid")
+            (root / ".gitignore").write_text("baseline\n")
+            self.commit(name)
 
     def test_private_proof_is_explicitly_not_hosted_evidence(self):
         proof = self.check()
         self.assertFalse(proof["hostedEvidenceEligible"])
         self.assertEqual(proof["inputs"]["qa"]["verifiedFileCount"], len(REQUIRED["qa"]))
+        self.assertIsNone(proof["inputs"]["qa"]["omittedManifestFileCount"])
+        self.assertEqual(proof["inputs"]["producer"]["omittedManifestFileCount"], 1)
         with self.assertRaises(ValueError):
             self.check(hosted=True)
         with self.assertRaises(ValueError):
@@ -95,14 +116,81 @@ class ProjectionTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     self.check(lock)
 
-    def test_reviewed_transport_identity_must_match_git_reader(self):
-        for name, root in self.sources.items():
-            (root / ".git").write_text("synthetic test marker; no real Git invocation")
-            self.lock["inputs"][name]["transportSha"] = "a" * 40
+    def test_clean_real_git_checkout_passes(self):
+        self.publish_fixtures()
+        proof = self.check(unpublished=False, hosted=True)
+        self.assertTrue(proof["hostedEvidenceEligible"])
+        for name, entry in proof["inputs"].items():
+            self.assertEqual(entry["transportSha"], self.lock["inputs"][name]["transportSha"])
+
+    def test_reviewed_transport_identity_must_match_git(self):
+        self.publish_fixtures()
         with self.assertRaises(ValueError):
             self.check(unpublished=False, head="b" * 40)
-        proof = self.check(unpublished=False, head="a" * 40)
-        self.assertTrue(proof["hostedEvidenceEligible"])
+        for entry in self.lock["inputs"].values():
+            entry["transportSha"] = "a" * 40
+        with self.assertRaisesRegex(ValueError, "Actual Git HEAD mismatch"):
+            self.check(unpublished=False, head="a" * 40)
+
+    def test_restored_working_bytes_cannot_hide_changed_committed_license(self):
+        self.publish_fixtures()
+        root = self.sources["producer"]
+        license_file = root / "LICENSE"
+        original = license_file.read_bytes()
+        license_file.write_text("unreviewed committed license\n")
+        self.commit("producer")
+        license_file.write_bytes(original)
+        self.git(root, "update-index", "--assume-unchanged", "LICENSE")
+        self.assertEqual(self.git(root, "status", "--porcelain"), "")
+        with self.assertRaisesRegex(ValueError, "Committed source hash mismatch: LICENSE"):
+            self.check(unpublished=False, hosted=True)
+
+    def test_deleted_working_file_cannot_hide_committed_extra(self):
+        self.publish_fixtures()
+        root = self.sources["producer"]
+        extra = root / "unreviewed.txt"
+        extra.write_text("committed extra\n")
+        self.commit("producer")
+        extra.unlink()
+        self.git(root, "update-index", "--assume-unchanged", "unreviewed.txt")
+        self.assertEqual(self.git(root, "status", "--porcelain"), "")
+        with self.assertRaisesRegex(ValueError, "Unreviewed committed file: unreviewed.txt"):
+            self.check(unpublished=False, hosted=True)
+
+    def test_untracked_required_file_cannot_fill_missing_committed_input(self):
+        self.publish_fixtures()
+        root = self.sources["producer"]
+        self.git(root, "rm", "--cached", "LICENSE")
+        self.git(root, "commit", "--quiet", "-m", "Missing committed input")
+        self.lock["inputs"]["producer"]["transportSha"] = self.git(root, "rev-parse", "HEAD").strip()
+        with self.assertRaisesRegex(ValueError, "Committed source file set differs"):
+            self.check(unpublished=False, hosted=True)
+
+    def test_dirty_real_git_checkout_fails(self):
+        self.publish_fixtures()
+        root = self.sources["experience"]
+        test = root / "ui/tests/client_units.cpp"
+        original = test.read_bytes()
+        test.write_bytes(original + b"dirty\n")
+        with self.assertRaisesRegex(ValueError, "Source hash mismatch"):
+            self.check(unpublished=False, hosted=True)
+        self.git(root, "add", "ui/tests/client_units.cpp")
+        test.write_bytes(original)
+        with self.assertRaisesRegex(ValueError, "Source checkout is dirty"):
+            self.check(unpublished=False, hosted=True)
+
+    def test_committed_symlink_cannot_be_restored_as_regular_file(self):
+        self.publish_fixtures()
+        root = self.sources["producer"]
+        license_file = root / "LICENSE"
+        original = license_file.read_bytes()
+        license_file.unlink()
+        license_file.symlink_to("core/Cargo.toml")
+        self.commit("producer")
+        license_file.unlink()
+        license_file.write_bytes(original)
+        with self.assertRaisesRegex(ValueError, "Non-regular committed path: LICENSE"):
+            self.check(unpublished=False, hosted=True)
 
 
 if __name__ == "__main__":

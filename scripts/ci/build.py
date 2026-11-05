@@ -17,11 +17,14 @@ PINS = {"producer": "74f4d57957c701da2a7705c47303c2e770888758",
         "qa": "6fff4dc5229ea88a2f55a274ab2ab561a3760065"}
 p = argparse.ArgumentParser()
 for name in PINS:
-    p.add_argument("--" + name, type=Path, required=True)
+    p.add_argument("--" + name, type=Path, required=name == "producer")
+p.add_argument("--producer-only", action="store_true")
 p.add_argument("--output", type=Path, required=True)
 p.add_argument("--qt", type=Path)
 p.add_argument("--native-only", action="store_true")
 a = p.parse_args()
+if not a.producer_only and any(getattr(a, name) is None for name in PINS):
+    p.error("All source inputs are required for application tests")
 out = a.output.resolve()
 out.mkdir(parents=True, exist_ok=False)  # A fresh directory is a clean-build gate.
 logs = out / "logs"
@@ -62,8 +65,7 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-sources = {name: getattr(a, name).resolve() for name in PINS}
-qa = sources["qa"] / "tests/integration/age29"
+sources = {name: getattr(a, name).resolve() for name in PINS if getattr(a, name)}
 if os.getenv("GITHUB_ACTIONS") == "true":
     expected = "arm64" if mac else "x86_64"
     if platform.machine() != expected:
@@ -84,14 +86,6 @@ save("identity.json", dict(pins=PINS, platform=platform.platform(),
      attempt=os.getenv("GITHUB_RUN_ATTEMPT"), image=os.getenv("ImageVersion"),
      instrumented="C/C++ harness only; Rust archive/std uninstrumented",
      compatibility="Deployment target 14.0 is not macOS 14 execution"))
-for name, filename in [("producer", "fixture-manifest.json"),
-                       ("experience", "experience-manifest.json")]:
-    manifest = json.loads((qa / filename).read_text())
-    if manifest["sourceCommit"] != PINS[name]:
-        raise SystemExit("Wrong source pin: " + name)
-    for file, expected in manifest["sourceFiles"].items():
-        if digest(sources[name] / file) != expected:
-            raise SystemExit("Source hash mismatch: " + name + "/" + file)
 run(["uname", "-a"])
 run(["sw_vers"] if mac else ["cat", "/etc/os-release"])
 for cmd in [["rustc", "-vV"], ["cargo", "--version"],
@@ -123,6 +117,23 @@ for symbol in ["calc_abi_version", "calc_evaluate_v1"]:
         raise SystemExit("Missing exported symbol: " + symbol)
 save("producer.json", dict(source=PINS["producer"], archiveSHA256=digest(archive),
                            nativeLinks=links, rebuilt=True))
+if a.producer_only:
+    filename = out / ("producer-" + platform.system().lower() + "-" + platform.machine() + ".tar.gz")
+    with tarfile.open(filename, "w:gz") as tar:
+        tar.add(archive, arcname="libcalculator_core.a")
+        tar.add(producer / "include/calculator_abi_v1.h", arcname="calculator_abi_v1.h")
+    (out / "SHA256SUMS").write_text(digest(filename) + "  " + filename.name + "\n")
+    save("result.json", dict(status="producer-units-passed", source=PINS["producer"], sha256=digest(filename)))
+    raise SystemExit(0)
+qa = sources["qa"] / "tests/integration/age29"
+for name, filename in [("producer", "fixture-manifest.json"),
+                       ("experience", "experience-manifest.json")]:
+    manifest = json.loads((qa / filename).read_text())
+    if manifest["sourceCommit"] != PINS[name]:
+        raise SystemExit("Wrong source pin: " + name)
+    for file, expected in manifest["sourceFiles"].items():
+        if digest(sources[name] / file) != expected:
+            raise SystemExit("Source hash mismatch: " + name + "/" + file)
 ui = sources["experience"]
 for mode, flags in [("normal", []),
                     ("asan-ubsan", ["-fsanitize=address,undefined"]),

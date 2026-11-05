@@ -38,16 +38,6 @@ jobs:
           ref: 74f4d57957c701da2a7705c47303c2e770888758
           path: inputs/producer
           persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: 35611d018ca82f86ed9a3271128999012789b39a
-          path: inputs/experience
-          persist-credentials: false
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: 6fff4dc5229ea88a2f55a274ab2ab561a3760065
-          path: inputs/qa
-          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.12.10'
@@ -61,6 +51,18 @@ jobs:
           dpkg-query -W > linux-packages.txt
       - name: Install pinned Rust
         run: rustup toolchain install 1.89.0 --profile minimal
+      - name: Independent producer build and unit tests
+        run: python3 scripts/ci/build.py --producer inputs/producer --producer-only --output "$RUNNER_TEMP/producer-results"
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 35611d018ca82f86ed9a3271128999012789b39a
+          path: inputs/experience
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6fff4dc5229ea88a2f55a274ab2ab561a3760065
+          path: inputs/qa
+          persist-credentials: false
       - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1
         with:
           xmake-version: '2.9.9'
@@ -93,6 +95,10 @@ jobs:
             linux-packages.txt
             python-packages.txt
             runner-context.txt
+            ${{ runner.temp }}/producer-results/logs
+            ${{ runner.temp }}/producer-results/*.json
+            ${{ runner.temp }}/producer-results/*.tar.gz
+            ${{ runner.temp }}/producer-results/SHA256SUMS
           if-no-files-found: error
           retention-days: 14
       - name: Artifact receipt

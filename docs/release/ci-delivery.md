@@ -19,6 +19,10 @@ Runner labels were checked against [GitHub's runner reference](https://docs.gith
 Hosted execution fails on an unexpected OS, architecture, or source checkout SHA.
 Local source exports rely on verified blob manifests and are not CI evidence.
 
+Producer build/unit/package steps run before Experience/QA fetch, preserving
+independent core evidence when application inputs are missing. A failed input
+checkout still fails the required platform job; core success cannot pass it.
+
 Each platform uploads command logs/exits, native archive provenance, application
 package, file hashes and SHA256SUMS. Failed jobs retain diagnostics and remain
 failed. Download the artifact from its job summary, verify its Actions digest,

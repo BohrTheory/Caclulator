@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "abi_version": 65536,
+  "constants": {
+    "CALC_ABI_VERSION": 65536,
+    "CALC_OK": 0,
+    "CALC_INVALID_ARGUMENT": 1,
+    "CALC_INVALID_UTF8": 2,
+    "CALC_SYNTAX": 3,
+    "CALC_DIVIDE_BY_ZERO": 4,
+    "CALC_DOMAIN": 5,
+    "CALC_RANGE": 6,
+    "CALC_BUFFER_TOO_SMALL": 7,
+    "CALC_LIMIT": 8,
+    "CALC_INTERNAL": 9,
+    "CALC_ANGLE_RAD": 0,
+    "CALC_ANGLE_DEG": 1,
+    "CALC_MAX_INPUT_BYTES": 4096,
+    "CALC_MAX_PARSE_DEPTH": 64,
+    "CALC_DISPLAY_CAPACITY": 64,
+    "CALC_NO_ERROR_OFFSET": "size_max"
+  },
+  "functions": [
+    {"name": "calc_abi_version", "return": "u32", "params": []},
+    {
+      "name": "calc_evaluate_v1", "return": "u32",
+      "params": [
+        ["expression", "const_u8_ptr"], ["expression_len", "size"],
+        ["angle_mode", "u32"], ["out_value", "f64_ptr"],
+        ["display", "char_ptr"], ["display_capacity", "size"],
+        ["out_required", "size_ptr"], ["out_error_offset", "size_ptr"]
+      ]
+    }
+  ]
+}

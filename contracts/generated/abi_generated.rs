@@ -1,0 +1,20 @@
+// Generated from contracts/calculator-abi-v1.json; SHA-256 ccbec1a3a05efd4aefb4cef1bcbe79756c4c2d7b3d13538076a73d5da67bd215. DO NOT EDIT.
+pub const CALC_ABI_VERSION: u32 = 65536;
+pub const CALC_OK: u32 = 0;
+pub const CALC_INVALID_ARGUMENT: u32 = 1;
+pub const CALC_INVALID_UTF8: u32 = 2;
+pub const CALC_SYNTAX: u32 = 3;
+pub const CALC_DIVIDE_BY_ZERO: u32 = 4;
+pub const CALC_DOMAIN: u32 = 5;
+pub const CALC_RANGE: u32 = 6;
+pub const CALC_BUFFER_TOO_SMALL: u32 = 7;
+pub const CALC_LIMIT: u32 = 8;
+pub const CALC_INTERNAL: u32 = 9;
+pub const CALC_ANGLE_RAD: u32 = 0;
+pub const CALC_ANGLE_DEG: u32 = 1;
+pub const CALC_MAX_INPUT_BYTES: u32 = 4096;
+pub const CALC_MAX_PARSE_DEPTH: u32 = 64;
+pub const CALC_DISPLAY_CAPACITY: u32 = 64;
+pub const CALC_NO_ERROR_OFFSET: usize = usize::MAX;
+pub type CalcAbiVersionFn = unsafe extern "C" fn() -> u32;
+pub type CalcEvaluateV1Fn = unsafe extern "C" fn(*const u8, usize, u32, *mut f64, *mut core::ffi::c_char, usize, *mut usize, *mut usize) -> u32;

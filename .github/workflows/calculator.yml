@@ -1,0 +1,145 @@
+name: Calculator CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: calculator-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-test:
+    name: build-test-${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+    env:
+      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      WORKFLOW_SHA: ${{ github.sha }}
+      RUSTUP_TOOLCHAIN: '1.89.0'
+      PROJECTION_FOUNDATION_SHA: 1294afe9ff9253475e9bf171afa3f50f220edbaf
+      PROJECTION_CONTRACT_SHA: 3de67a789222b46a9ef44cafd5b5263887fa33ee
+      PYTHONPATH: ${{ github.workspace }}/ci-verifier/scripts/ci
+      PROJECTION_LOCK: ${{ github.workspace }}/ci-contract/scripts/ci/projection-lock.private.json
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - name: Validate support pin format
+        run: |
+          [[ "$PROJECTION_FOUNDATION_SHA" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$PROJECTION_CONTRACT_SHA" =~ ^[0-9a-f]{40}$ ]]
+      - name: Record runner and verify workflow checkout
+        run: |
+          test "$(git rev-parse HEAD)" = "$CANDIDATE_SHA"
+          { uname -a; if [[ "$RUNNER_OS" == macOS ]]; then sw_vers; else cat /etc/os-release; fi; } > runner-context.txt
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: aced823a191263dca6706fbb994d8f688d8a1f2c
+          path: inputs/producer
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 1ef2945a294e7aaae2b1436ecef24e1d5bad2eb4
+          path: inputs/experience
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: a7604a96feb7bc994d157a9df5be2b8ee47817d9
+          path: inputs/qa
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PROJECTION_FOUNDATION_SHA }}
+          path: ci-verifier
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PROJECTION_CONTRACT_SHA }}
+          path: ci-contract
+          persist-credentials: false
+      - name: Verify reviewed support checkouts
+        run: |
+          test "$(git -C ci-verifier rev-parse HEAD)" = "$PROJECTION_FOUNDATION_SHA"
+          test "$(git -C ci-contract rev-parse HEAD)" = "$PROJECTION_CONTRACT_SHA"
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          for path, expected in [
+              ("ci-verifier/scripts/ci/projection.py", "4dba60815744371c3dccbbbb846b397eda2b671a62b8f25b4e2f5c293bbe0bd7"),
+              ("ci-contract/scripts/ci/projection-lock.private.json", "06e304d7aaf9e6fef002f60b2145886de3aae0300c77e8d8f72d2b0dad0971b8"),
+          ]:
+              if hashlib.sha256(Path(path).read_bytes()).hexdigest() != expected:
+                  raise SystemExit("Reviewed support SHA256 mismatch: " + path)
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12.10'
+      - name: Linux build and test prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-18 libgl1-mesa-dev libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 xvfb openbox dbus-x11
+          sudo sysctl vm.mmap_rnd_bits=28
+          echo /usr/lib/llvm-18/bin >> "$GITHUB_PATH"
+          dpkg-query -W > linux-packages.txt
+      - name: Install pinned Rust
+        run: rustup toolchain install 1.89.0 --profile minimal
+      - name: Verify all inputs, build producer and run unit tests
+        run: python3 scripts/ci/build.py --producer inputs/producer --experience inputs/experience --qa inputs/qa --projection-lock "$PROJECTION_LOCK" --producer-only --output "$RUNNER_TEMP/producer-results"
+      - uses: xmake-io/github-action-setup-xmake@3a1a5dddfc7fa625d9a698738334bf55655a861a # v1
+        with:
+          xmake-version: '2.9.9'
+      - uses: jurplel/install-qt-action/action@d325aaf2a8baeeda41ad0b5d39f84a6af9bcf005 # v4.3.0
+        with:
+          version: '6.8.3'
+          aqtversion: '==3.3.0'
+          py7zrversion: '==1.1.0'
+          cache: false
+      - name: Verify pinned Python and Qt after setup
+        run: |
+          python3 -c 'import sys; print(sys.version); assert sys.version_info[:3] == (3, 12, 10)'
+          test "$("$QT_ROOT_DIR/bin/qmake" -query QT_VERSION)" = 6.8.3
+      - name: Clean native build, unit and integration execution, package
+        run: |
+          set -euo pipefail
+          python3 -m pip freeze > python-packages.txt
+          args=(scripts/ci/build.py --producer inputs/producer --experience inputs/experience --qa inputs/qa --projection-lock "$PROJECTION_LOCK" --qt "$QT_ROOT_DIR" --output "$RUNNER_TEMP/calculator-results")
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            dbus-run-session -- xvfb-run -a sh -c 'openbox > /tmp/openbox.log 2>&1 & wm=$!; trap "kill $wm" EXIT; python3 "$@"' sh "${args[@]}"
+          else
+            python3 "${args[@]}"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        id: evidence
+        with:
+          name: calculator-${{ matrix.os }}-${{ env.CANDIDATE_SHA }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/calculator-results/logs
+            ${{ runner.temp }}/calculator-results/*.json
+            ${{ runner.temp }}/calculator-results/*.tar.gz
+            ${{ runner.temp }}/calculator-results/SHA256SUMS
+            linux-packages.txt
+            python-packages.txt
+            runner-context.txt
+            ${{ runner.temp }}/producer-results/logs
+            ${{ runner.temp }}/producer-results/*.json
+            ${{ runner.temp }}/producer-results/*.tar.gz
+            ${{ runner.temp }}/producer-results/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+      - name: Artifact receipt
+        if: always()
+        env:
+          ARTIFACT_URL: ${{ steps.evidence.outputs.artifact-url }}
+          ARTIFACT_DIGEST: ${{ steps.evidence.outputs.artifact-digest }}
+        run: printf 'Candidate %s\nArtifact %s\nDigest %s\n' "$CANDIDATE_SHA" "$ARTIFACT_URL" "$ARTIFACT_DIGEST" >> "$GITHUB_STEP_SUMMARY"

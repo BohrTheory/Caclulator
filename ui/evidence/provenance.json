@@ -1,0 +1,20 @@
+{
+  "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530",
+  "branch": "codex/AGE-26-79fe4720-9995-494b-996d-a4e9d4225530",
+  "agent": "79fe4720-9995-494b-996d-a4e9d4225530",
+  "task": "ac4ffa68-ace8-4275-80c0-a4bd9c065ada",
+  "run": "6d7f8f79-794a-4aea-904a-a0c98f8fed35",
+  "initial_status": "clean",
+  "historical_base": "3ef202581d4e784d0f9da508767577888a4fc272",
+  "architecture": "67100ba0ce1d7aaf4fcafadb9101465b78d19829",
+  "spec": "752d0961c8aacb2e79addeb6d1e26a7ea820d734",
+  "integrated_base": "22d6b90c1e1baa16d5de40a0c235847d998cfb66",
+  "integration": {
+    "command": "git merge --ff-only 67100ba0ce1d7aaf4fcafadb9101465b78d19829 && git restore --source=752d0961c8aacb2e79addeb6d1e26a7ea820d734 -- docs/product/calculator-spec-v1.md docs/product/acceptance-cases-v1.md && git add docs/product && git commit -m 'docs: integrate accepted M1 product inputs' -m 'Co-Authored-By: Paperclip <noreply@paperclip.ing>' && git rev-parse HEAD",
+    "default_sandbox_exit": 128,
+    "default_sandbox_failure": "ORIG_HEAD.lock: Operation not permitted",
+    "authorized_git_allowance_retry_exit": 0,
+    "commit": "22d6b90c1e1baa16d5de40a0c235847d998cfb66"
+  },
+  "scope": "No canonical/other-author checkout edits, reset/repoint, remote writes or global installations. Local automatic committer is not authenticated GitHub identity. Assigned branch retained."
+}

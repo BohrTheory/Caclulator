@@ -1,0 +1,6 @@
+
+STDERR:
+Package Qt6Widgets was not found in the pkg-config search path.
+Perhaps you should add the directory containing `Qt6Widgets.pc'
+to the PKG_CONFIG_PATH environment variable
+Package 'Qt6Widgets' not found

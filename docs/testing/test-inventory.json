@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Draft for independent coverage review; AGE198 PR15 300f44e0e4f7a8264950818bb449ee8df387d9d2; calculator-native-tests/v1 proposed PR14 325c84e",
+  "targets": {
+    "calculator_tests": {
+      "cases": {
+        "AbiBoundary.BufferCapacitiesAndCanaries": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/BufferCapacitiesAndCanaries",
+        "AbiBoundary.InvalidArgumentsNeverWrite": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/InvalidArgumentsNeverWrite",
+        "AbiBoundary.InputAndNestingLimits": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/InputAndNestingLimits",
+        "AbiBoundary.ArithmeticFormattingAndErrors": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/ArithmeticFormattingAndErrors",
+        "AbiBoundary.DisplayRounding": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/DisplayRounding",
+        "AbiBoundary.SyntaxAndEvaluationErrors": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/SyntaxAndEvaluationErrors",
+        "AbiBoundary.Utf8AndByteOffsets": "docs/testing/gtest-migration.md: AbiBoundary oracle provenance; boundary.cpp/Utf8AndByteOffsets",
+        "Consumer.AbiCompatibility": "docs/testing/gtest-migration.md: Consumer oracle provenance; consumer.cpp/AbiCompatibility",
+        "Consumer.LosslessTransport": "docs/testing/gtest-migration.md: Consumer oracle provenance; consumer.cpp/LosslessTransport",
+        "Consumer.RetainedValueContinuation": "docs/testing/gtest-migration.md: Consumer oracle provenance; consumer.cpp/RetainedValueContinuation",
+        "Consumer.ConcurrentDisjointOutputs": "docs/testing/gtest-migration.md: Consumer oracle provenance; consumer.cpp/ConcurrentDisjointOutputs",
+        "ControllerContract.RepeatMatrix": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RepeatMatrix",
+        "ControllerContract.EditedRepeat": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/EditedRepeat",
+        "ControllerContract.ClearRepeat": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ClearRepeat",
+        "ControllerContract.OperatorContinuation": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/OperatorContinuation",
+        "ControllerContract.ResultEditsClearRepeat": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ResultEditsClearRepeat",
+        "ControllerContract.ErrorRecovery": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ErrorRecovery",
+        "ControllerContract.RepeatOverflowRecovery": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RepeatOverflowRecovery",
+        "ControllerContract.RetainedThird": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RetainedThird",
+        "ControllerContract.RetainedBinaryResidual": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RetainedBinaryResidual",
+        "ControllerContract.TransportBoundaries": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/TransportBoundaries",
+        "ControllerContract.DuplicateDecimal": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/DuplicateDecimal",
+        "ControllerContract.DuplicateExponent": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/DuplicateExponent",
+        "ControllerContract.Backspace": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/Backspace",
+        "ControllerContract.OperandSign": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/OperandSign",
+        "ControllerContract.ArithmeticFormatting": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ArithmeticFormatting",
+        "ControllerContract.SyntaxErrors": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/SyntaxErrors",
+        "ControllerContract.RangeError": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RangeError",
+        "ControllerContract.InjectedStatuses": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/InjectedStatuses",
+        "ControllerContract.RetryFailureRecovery": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/RetryFailureRecovery",
+        "ControllerContract.TransportFailureRecovery": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/TransportFailureRecovery",
+        "ControllerContract.PartialClear": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/PartialClear",
+        "ControllerContract.ResultClear": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ResultClear",
+        "ControllerContract.DecimalBackspace": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/DecimalBackspace",
+        "ControllerContract.SignedBackspace": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/SignedBackspace",
+        "ControllerContract.SignToggle": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/SignToggle",
+        "ControllerContract.OperandSignToggle": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/OperandSignToggle",
+        "ControllerContract.DecimalAfterResult": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/DecimalAfterResult",
+        "ControllerContract.ContinuationAndFreshDigit": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/ContinuationAndFreshDigit",
+        "ControllerContract.SubnormalAndUnderflow": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/SubnormalAndUnderflow",
+        "ControllerContract.KeyboardMapping": "docs/testing/gtest-migration.md: ControllerContract oracle provenance; controller.cpp/KeyboardMapping"
+      }
+    }
+  }
+}

@@ -108,6 +108,10 @@ jobs:
         run: |
           python3 -c 'import sys; print(sys.version); assert sys.version_info[:3] == (3, 12, 10)'
           test "$("$QT_ROOT_DIR/bin/qmake" -query QT_VERSION)" = 6.8.3
+      - name: Validate GoogleTest inventory protocol boundaries
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s scripts/ci -p test_gtest_inventory.py 2>&1 | tee inventory-validation.log
       - name: Clean native build, unit and integration execution, package
         run: |
           set -euo pipefail
@@ -131,6 +135,7 @@ jobs:
             linux-packages.txt
             python-packages.txt
             runner-context.txt
+            inventory-validation.log
             ${{ runner.temp }}/producer-results/logs
             ${{ runner.temp }}/producer-results/*.json
             ${{ runner.temp }}/producer-results/*.tar.gz

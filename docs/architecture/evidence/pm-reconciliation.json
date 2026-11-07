@@ -106,7 +106,7 @@
       "docs/architecture"
     ],
     "exit_code": 128,
-    "stderr": "fatal: Unable to create '/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator/.git/worktrees/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b/index.lock': Operation not permitted",
+    "stderr": "fatal: Unable to create '<git-dir>/worktrees/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b/index.lock': Operation not permitted",
     "next_action": "Task-authorized bounded staging/commit escalation; outcome recorded in Paperclip handoff."
   }
 }

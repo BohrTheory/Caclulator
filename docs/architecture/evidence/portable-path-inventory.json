@@ -1,0 +1,76 @@
+{
+  "sourceCommit": "1097fa1dbdc3037551bc252e35a3de22769ef37b",
+  "scope": "Forward-only path-prefix replacement; every other byte preserved. Original evidence retained privately in Paperclip; published ancestry not erased.",
+  "substitutions": {
+    "historical repository worktree prefix": "<worktree>",
+    "historical shared Git directory prefix": "<git-dir>"
+  },
+  "files": [
+    {
+      "path": "docs/architecture/evidence/pm-reconciliation.json",
+      "sourceBlob": "0c5c6588c835f4533e017aa161cb72dae28cbf0b",
+      "originalSha256": "3a0e64f405b4b3cd0737b25fa4a0fb42c10ec1fd97262e5a988431f7dc752f61",
+      "portableSha256": "7c62891e06fcb2406c0efe8ac2dde3734cd8a35502f76fc536b989d10d850ef5",
+      "originalBytes": 3921,
+      "portableBytes": 3869,
+      "workspaceSubstitutions": 0,
+      "gitDirSubstitutions": 1,
+      "roundTripExact": true
+    },
+    {
+      "path": "docs/architecture/evidence/pm-reconciliation.md",
+      "sourceBlob": "7085639b5a4d8508ea3865defc031f51d0c6a190",
+      "originalSha256": "8592f7ed95b7bceeea306856949edb0b4ac6e92a35d0d3fc35437bcc9ece357c",
+      "portableSha256": "b877ffa876a8d9bdb2016c3561fbb53d6d85fb59eee0cf7d79b860b49348dd64",
+      "originalBytes": 6388,
+      "portableBytes": 6283,
+      "workspaceSubstitutions": 1,
+      "gitDirSubstitutions": 0,
+      "roundTripExact": true
+    },
+    {
+      "path": "docs/architecture/evidence/repeat-policy-reconciliation.json",
+      "sourceBlob": "178448ecf6d49630bf1283a75436863caff7a49f",
+      "originalSha256": "46d2cdefecf9c1d4315a2190104a3e9a924e8bae3d27047afe6ee1a067632197",
+      "portableSha256": "0a993b21983ec2b67638cb169cdb64262ab4ca1e06dbc19f3434109b3877d5ce",
+      "originalBytes": 7844,
+      "portableBytes": 7424,
+      "workspaceSubstitutions": 4,
+      "gitDirSubstitutions": 0,
+      "roundTripExact": true
+    },
+    {
+      "path": "docs/architecture/evidence/repeat-policy-reconciliation.md",
+      "sourceBlob": "dd1ccf0125aefe7f1179bc0d52719f7ced4b8744",
+      "originalSha256": "0d1553b27d279a5e62fe8ac06df0cba564865e4abb864b07f97438609965cc79",
+      "portableSha256": "240b683a020869318a42fba6c181ae2e8f04ba00f2db16c3f41e35080766b036",
+      "originalBytes": 7533,
+      "portableBytes": 7428,
+      "workspaceSubstitutions": 1,
+      "gitDirSubstitutions": 0,
+      "roundTripExact": true
+    },
+    {
+      "path": "docs/architecture/evidence/review-remediation.json",
+      "sourceBlob": "f3e05e04840c7ae7b4880f56f618c8d6a97e4178",
+      "originalSha256": "330df256ce5bba3073c8feee9fb5030c410164b159c1b99a9eb9f7ed959c8fac",
+      "portableSha256": "8af945996f200d76f6e54617af4038e61943eecfe4a7a9c585ef76b797fec491",
+      "originalBytes": 11962,
+      "portableBytes": 9967,
+      "workspaceSubstitutions": 19,
+      "gitDirSubstitutions": 0,
+      "roundTripExact": true
+    },
+    {
+      "path": "docs/architecture/evidence/verification.json",
+      "sourceBlob": "fdf44a2be1f8cc43d108d637ff5efe3e2cc676f3",
+      "originalSha256": "35f27cfec660cf52c9d7a4ad4b6d3b073dffa030ea41fc5ff41dd36ae1d24902",
+      "portableSha256": "92ab9a715e5742a13b45a32689e51d262bf6678c1da384f58601d4410b2f5dd6",
+      "originalBytes": 8611,
+      "portableBytes": 7141,
+      "workspaceSubstitutions": 14,
+      "gitDirSubstitutions": 0,
+      "roundTripExact": true
+    }
+  ]
+}

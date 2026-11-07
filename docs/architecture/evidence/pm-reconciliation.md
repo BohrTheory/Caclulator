@@ -7,7 +7,7 @@ Author `a8ab3e67-2131-425e-b539-7273ba1bc46b`, run
 `b432833c-7d6e-4b3d-86c9-30fe99785657`.
 Repository `https://github.com/BohrTheory/Caclulator`;
 branch `codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b`;
-worktree `/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b`.
+worktree `<worktree>`.
 Base/prior candidate `5fd95cfad404d85b72c6a9d4663b1d607aec5e6d`.
 The immutable commit containing this record is the updated contract reference;
 its full SHA is supplied in the Paperclip handoff (no self-referential hash).

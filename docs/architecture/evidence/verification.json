@@ -10,7 +10,7 @@
         "clang",
         "--version"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -22,7 +22,7 @@
         "clang++",
         "--version"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -34,7 +34,7 @@
         "rustc",
         "--version"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -46,7 +46,7 @@
         "python3",
         "--version"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -59,7 +59,7 @@
         "rev-parse",
         "HEAD"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -72,7 +72,7 @@
         "branch",
         "--show-current"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -85,7 +85,7 @@
         "tools/generate_abi.py",
         "--check"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -106,7 +106,7 @@
         "-o",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/c.o"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -127,7 +127,7 @@
         "-o",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/cpp.o"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -143,7 +143,7 @@
         "-o",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/types.rlib"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -156,7 +156,7 @@
         "-u",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/cpp.o"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -185,7 +185,7 @@
         "-o",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/matching.rlib"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "expected_exit_code": 0,
       "passed": true,
@@ -201,12 +201,12 @@
         "-o",
         "/var/folders/93/f13k8jt16cl46002dktz5qdh0000gn/T/paperclip-run-age-7-0d84077a-f6d-MJH2Y3/age7-abi-oc_lb352/mismatch.rlib"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 1,
       "expected_exit_code": 1,
       "passed": true,
       "stdout": "",
-      "stderr": "error[E0308]: mismatched types\n --> /Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b/contracts/generated/producer_checks.rs:4:51\n  |\n4 | const _: crate::abi_generated::CalcEvaluateV1Fn = crate::ffi::calc_evaluate_v1;\n  |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item\n  |\n  = note: expected fn pointer `unsafe extern \"C\" fn(_, _, _, *mut f64, _, _, _, _) -> _`\n                found fn item `unsafe extern \"C\" fn(_, _, _, *mut f32, _, _, _, _) -> _ {ffi::calc_evaluate_v1}`\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0308`.\n"
+      "stderr": "error[E0308]: mismatched types\n --> <worktree>/contracts/generated/producer_checks.rs:4:51\n  |\n4 | const _: crate::abi_generated::CalcEvaluateV1Fn = crate::ffi::calc_evaluate_v1;\n  |                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item\n  |\n  = note: expected fn pointer `unsafe extern \"C\" fn(_, _, _, *mut f64, _, _, _, _) -> _`\n                found fn item `unsafe extern \"C\" fn(_, _, _, *mut f32, _, _, _, _) -> _ {ffi::calc_evaluate_v1}`\n\nerror: aborting due to 1 previous error\n\nFor more information about this error, try `rustc --explain E0308`.\n"
     }
   ],
   "input_sha256": {

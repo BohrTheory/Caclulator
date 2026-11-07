@@ -7,7 +7,7 @@ Project `50271359-4516-466c-8325-0d234bd5ddb0`, source AGE-7
 `dd2750ff-6eb9-4f64-a1d3-270f9a7a511c`.
 Repository `https://github.com/BohrTheory/Caclulator`; branch
 `codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b`; assigned worktree
-`/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b`.
+`<worktree>`.
 Parent architecture `eabbeb9581d157d573b81f7a8551a33826ecc79e`; original base
 `3ef202581d4e784d0f9da508767577888a4fc272`.
 Current spec `752d0961c8aacb2e79addeb6d1e26a7ea820d734`, both

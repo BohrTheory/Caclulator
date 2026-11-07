@@ -13,7 +13,7 @@
         "tools/generate_abi.py",
         "--check"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "stdout": "ABI generated artifacts match\n",
       "stderr": ""
@@ -24,7 +24,7 @@
         "diff",
         "--check"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "stdout": "",
       "stderr": ""
@@ -41,7 +41,7 @@
         "tools",
         "examples"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "stdout": "",
       "stderr": ""
@@ -52,7 +52,7 @@
         "-c",
         "from pathlib import Path\nimport json,hashlib,subprocess,re\np=Path('docs/architecture');spec='752d0961c8aacb2e79addeb6d1e26a7ea820d734';parent='eabbeb9581d157d573b81f7a8551a33826ecc79e'\nold=json.loads((p/'evidence/review-remediation.json').read_text())['input_sha256']\nfor name,digest in old.items():\n assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name\n assert subprocess.check_output(['git','show',parent+':'+name])==Path(name).read_bytes(),name\nprint('All nine checker inputs match historical report and parent blobs')\nfor f in list((p/'evidence').glob('*.json'))+[p/'evidence/checker-regressions.txt']:\n if f.name=='repeat-policy-reconciliation.json': continue\n assert f.read_bytes()==subprocess.check_output(['git','show',parent+':'+str(f)]),str(f)\nprint('Original evidence JSON/logs unchanged')\nfor name in ['README.md','adr-0001-c-abi-and-modules.md','c-abi-v1.md','integration-packets.md','compatibility.md']:\n text=(p/name).read_text();assert spec in text,name\n if name!='compatibility.md':assert 'c5ff879a8df5a673f3b8dae7d5e46fe30ec67549' not in text,name\n for stale in ['PM must settle','AGE-6 must clarify','compound repeat selection needs PM clarification','remaining compound-expression repeat policy question']:\n  assert stale not in text,(name,stale)\nprint('Five current documents pin new spec; old compatibility paragraph explicitly historical; stale active wait instructions absent')\nt=(p/'integration-packets.md').read_text()\nfor expression,oracle in [('2+3*4','14, 56, 224'),('(2+3)*4','20, 80, 320'),('2*(3+4)','14, 98, 686'),('2+3','5, 8, 11'),('((2+3))','5, 8, 11'),('8/4/2','1, 0.5, 0.25'),('2*-3','-6, 18, -54'),('2+1e-3','2.001, 2.002, 2.003'),('-(2+3)','-5 unchanged'),('7','7 unchanged')]:\n row=next(line for line in t.splitlines() if line.startswith('| `'+expression+'` |'))\n assert oracle in row and 'U-12 / I-12 / G-12 both platforms' in row,row\nassert '| Enter `2+3*5`, Backspace, `4`, Equals, Equals | `*`, 4 from current text | 14, 56 exactly' in t\nprint('All eleven U-12 table rows carry expected numerical oracles and U/I/G mapping; no runtime execution')\nfor f in p.rglob('*.md'):\n for target in re.findall(r'\\]\\(([^)]+)\\)',f.read_text()):\n  if '://' in target or target.startswith(('#','/')):continue\n  assert (f.parent/target.split('#')[0]).exists(),(str(f),target)\nprint('Relative Markdown file links resolve')\n"
       ],
-      "cwd": "/Users/andrejpersin/Projects/ideas/BhorTheory/Caclulator-worktrees/codex/AGE-7-a8ab3e67-2131-425e-b539-7273ba1bc46b",
+      "cwd": "<worktree>",
       "exit_code": 0,
       "stdout": "All nine checker inputs match historical report and parent blobs\nOriginal evidence JSON/logs unchanged\nFive current documents pin new spec; old compatibility paragraph explicitly historical; stale active wait instructions absent\nAll eleven U-12 table rows carry expected numerical oracles and U/I/G mapping; no runtime execution\nRelative Markdown file links resolve\n",
       "stderr": ""

@@ -159,20 +159,15 @@ if projection is None:
             if digest(sources[name] / file) != expected:
                 raise SystemExit("Source hash mismatch: " + name + "/" + file)
 ui = sources["experience"]
-for mode, flags in [("normal", []),
-                    ("asan-ubsan", ["-fsanitize=address,undefined"]),
-                    ("tsan", ["-fsanitize=thread"])]:
-    for name, compiler, standard, inputs in [
-        ("boundary", "clang", "c11", [qa / "boundary.c"]),
-        ("consumer", "clang++", "c++17", [qa / "consumer.cpp"]),
-        ("controller", "clang++", "c++17", [qa / "controller.cpp",
-         ui / "ui/src/adapter.cpp", ui / "ui/src/controller.cpp"])]:
-        exe = out / (name + "-" + mode)
-        run([compiler, "-std=" + standard, "-Wall", "-Wextra", "-Werror",
-             "-g", "-O1", "-fno-omit-frame-pointer", "-I" + str(producer / "include"),
-             "-I" + str(ui / "ui/src"), *inputs, archive, *links, *flags,
-             *(["-mmacosx-version-min=14.0"] if mac else ["-pthread"]), "-o", exe])
-        run([exe])
+# Execute tests from this candidate, rather than the historical QA checkout.
+# Producer/UI remain verified against the reviewed source projections above.
+for mode in ("normal", "asan-ubsan", "tsan"):
+    run(["python3", Path(__file__).resolve().parents[2] /
+         "tests/integration/age29/run_gtest.py", "--producer", producer,
+         "--experience", ui, "--archive", archive, "--output", out / mode,
+         "--mode", mode, *["--link=" + flag for flag in links]])
+    for artifact in ("results.xml", "test-inputs.json"):
+        shutil.copy2(out / mode / artifact, logs / (mode + "-gtest-" + artifact))
 if a.native_only:
     raise SystemExit(0)
 if not a.qt:

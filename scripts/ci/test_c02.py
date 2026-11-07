@@ -24,7 +24,9 @@ class CandidateChecks(unittest.TestCase):
         for name in PATHS:
             target = cls.fixture / name
             target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(subprocess.check_output(["git", "show", SOURCE + ":" + name]))
+            root = os.getenv("C02_TEST_SOURCE", ".")
+            revision = "HEAD" if os.getenv("C02_TEST_SOURCE") else SOURCE
+            target.write_bytes(subprocess.check_output(["git", "-C", root, "show", revision + ":" + name]))
         subprocess.run(["git", "init", "-q", cls.fixture], check=True)
         subprocess.run(["git", "-C", cls.fixture, "add", "."], check=True)
         subprocess.run(["git", "-C", cls.fixture, "-c", "user.name=C02 Fixture",
